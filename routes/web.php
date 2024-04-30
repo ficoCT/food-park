@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/** Show Home page */
+Route::get('/', [FrontendController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

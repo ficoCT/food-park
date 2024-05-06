@@ -64,4 +64,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 
     /** Product Category Routes */
     Route::resource('category', CategoryController::class);
+
+    /** Product Routes */
+    Route::resource('product', ProductController::class);
 });

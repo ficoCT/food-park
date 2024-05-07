@@ -47,7 +47,7 @@ use App\Models\ReservationTime;
 use App\Models\TramsAndCondtion;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
@@ -55,8 +55,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
-     /** Slider Routes */
-     Route::resource('slider', SliderController::class);
+    /** Slider Routes */
+    Route::resource('slider', SliderController::class);
 
     /** Why choose us Routes */
     Route::put('why-choose-title-update', [WhyChooseUsController::class, 'updateTitle'])->name('why-choose-title.update');
@@ -71,4 +71,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     /** Product Gallery Routes */
     Route::get('product-gallery/{product}', [ProductGalleryController::class, 'index'])->name('product-gallery.show-index');
     Route::resource('product-gallery', ProductGalleryController::class);
+
+    /** Product Size Routes */
+    Route::resource('product-option', ProductOptionController::class);
 });

@@ -30,13 +30,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
 });
 
+require __DIR__.'/auth.php';
+
 /** Show Home page */
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+/** Show Product details page */
+Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');

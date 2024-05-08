@@ -74,4 +74,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     /** Product Size Routes */
     Route::resource('product-option', ProductOptionController::class);
+
+    /** Setting Routes */
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+    Route::put('/general-setting', [SettingController::class, 'UpdateGeneralSetting'])->name('general-setting.update');
 });

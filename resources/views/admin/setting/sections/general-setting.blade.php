@@ -5,8 +5,8 @@
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label for="">Site Name</label>
-                    <input name="site_name" type="text" class="form-control" value="{{config('settings.site_name')}}">
+                    <label for="">Site Name</label><input name="site_name" type="text" class="form-control" value="{{config('settings.site_name')}}">
+
                 </div>
                 <div class="row">
                     <div class="col-md-6">

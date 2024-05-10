@@ -37,3 +37,11 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 
 /** Show Product details page */
 Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');
+
+/** Product Modal Route */
+Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadProductModal'])->name('load-product-modal');
+
+/** Add to cart Route */
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('get-cart-products', [CartController::class, 'getCartProduct'])->name('get-cart-products');
+Route::get('cart-product-remove/{rowId}', [CartController::class, 'cartProductRemove'])->name('cart-product-remove');

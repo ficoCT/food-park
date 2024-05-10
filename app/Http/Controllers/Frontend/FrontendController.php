@@ -73,4 +73,10 @@ class FrontendController extends Controller
         $reviews = ProductRating::where(['product_id' => $product->id, 'status' => 1])->paginate(30);
         return view('frontend.pages.product-view', compact('product', 'relatedProducts', 'reviews'));
     }
+
+    function loadProductModal($productId) {
+        $product = Product::with(['productSizes', 'productOptions'])->findOrFail($productId);
+
+        return view('frontend.layouts.ajax-files.product-popup-modal', compact('product'))->render();
+    }
 }

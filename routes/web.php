@@ -57,3 +57,8 @@ Route::get('/cart-destroy', [CartController::class, 'cartDestroy'])->name('cart.
 /** Coupon Routes */
 Route::post('/apply-coupon', [FrontendController::class, 'applyCoupon'])->name('apply-coupon');
 Route::get('/destroy-coupon', [FrontendController::class, 'destroyCoupon'])->name('destroy-coupon');
+
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('checkout/{id}/delivery-cal', [CheckoutController::class, 'CalculateDeliveryCharge'])->name('checkout.delivery-cal');
+});

@@ -25,6 +25,14 @@ class PaymentController extends Controller
         ));
     }
 
+    function paymentSuccess() : View {
+        return view('frontend.pages.payment-success');
+    }
+
+    function paymentCancel() : View {
+        return view('frontend.pages.payment-cancel');
+    }
+
     function makePayment(Request $request, OrderService $orderService)
     {
         $request->validate([
@@ -148,6 +156,12 @@ class PaymentController extends Controller
             $this->transactionFailUpdateStatus('PayPal');
             return redirect()->route('payment.cancel')->withErrors(['error' => $response['error']['message']]);
         }
+    }
+
+    function paypalCancel()
+    {
+        $this->transactionFailUpdateStatus('PayPal');
+        return redirect()->route('payment.cancel');
     }
 
 }

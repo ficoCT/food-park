@@ -237,4 +237,53 @@ class PaymentController extends Controller
 
         OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, $gatewayName);
     }
+
+    function razorpayRedirect() {
+        return view('frontend.pages.razorpay-redirect');
+    }
+
+    function payWithRazorpay(Request $request, OrderService $orderService) {
+        $api = new RazorpayApi(
+            config('gatewaySettings.razorpay_api_key'),
+            config('gatewaySettings.razorpay_secret_key'),
+        );
+
+        if($request->has('razorpay_payment_id') && $request->filled('razorpay_payment_id')){
+            $grandTotal = session()->get('grand_total');
+            $payableAmount = ($grandTotal * config('gatewaySettings.razorpay_rate')) * 100;
+
+            try{
+                $response = $api->payment
+                    ->fetch($request->razorpay_payment_id)
+                    ->capture(['amount' => $payableAmount]);
+            }catch(\Exception $e) {
+                logger($e);
+                $this->transactionFailUpdateStatus('Razorpay');
+                return redirect()->route('payment.cancel')->withErrors($e->getMessage());
+            }
+
+            if($response['status'] === 'captured'){
+
+                $orderId = session()->get('order_id');
+                $paymentInfo = [
+                    'transaction_id' => $response->id,
+                    'currency' => config('settings.site_default_currency'),
+                    'status' => 'completed'
+                ];
+
+                OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'Razorpay');
+                OrderPlacedNotificationEvent::dispatch($orderId);
+                RTOrderPlacedNotificationEvent::dispatch(Order::find($orderId));
+
+
+                /** Clear session data */
+                $orderService->clearSession();
+
+                return redirect()->route('payment.success');
+            }else {
+                $this->transactionFailUpdateStatus('Razorpay');
+                return redirect()->route('payment.cancel')->withErrors($e->getMessage());
+            }
+        }
+    }
 }
